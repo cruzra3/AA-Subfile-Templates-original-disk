@@ -1,0 +1,5 @@
+crtlib   caseduc text('CAS Education Series Library') aut(*all) crtaut(*all)
+crtsrcpf caseduc/edusrc
+addpfm   caseduc/edusrc  cvtpfsav
+crtpf    caseduc/rssdtaf rcdlen(528)
+crtsavf  caseduc/rsssavf

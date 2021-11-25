@@ -1,0 +1,120 @@
+                RPG/400 Interactive Template Technique
+                      Installation instructions
+
+
+Requirements:
+
+
+ 1.  You must be running PC Support/400 or Client Access/400 on your PC 
+     and currently connected to the AS/400.  If you have multiple systems
+     connected, this will install on the default system.
+
+
+ 2.  This installation process uses the following PC Support/400 functions
+     to install the sample library:
+
+       . Remote command (RMTCMD).
+      
+       . File transfer from PC in batch mode (RFROMPCB).
+
+     You will need to know where these files are located.  They are 
+     typically in C:\PCS if they were selected during the install
+     process.  Otherwise, they would be located on your AS/400 product
+     folders.
+
+
+
+Automatic installation:
+
+ 1.  Insert the diskette into your diskette drive.
+
+ 2.  Switch to that drive:
+
+        C:\> A:      <Enter>
+
+ 3.  Enter the following command:
+
+        A:\> install <pcs_path>
+
+          where <pcs_path> is the drive and path where your PC Support
+          code is located.  For example:
+
+                 install c:\pcs              (Remote command and File
+                                              transfer are installed
+                                              locally)
+            - or - 
+  
+                 install i:\qiwsfl2          (Shared folders must be 
+                                              active and drive I: assigned
+                                              to all folders)
+            - or -
+
+                 install i:\qdls\qiwsfl2     (If running Client Access/400
+                                              for Windows V3R1M0, this is
+                                              where you will find your 
+                                              Remote command and file
+                                              transfer functions)
+
+4.  This completes the automatic installation.  You now have a library on
+    your AS/400 called TEMPLATE.
+
+
+
+
+Manual installation:
+
+
+ 1.  Insert your diskette into your diskette drive.
+
+
+ 2.  Enter the following commands from the AS/400 command line:
+
+       CRTLIB   CASEDUC TEXT('CAS Education Series Library') AUT(*ALL)
+                  CRTAUT(*ALL)
+
+       CRTSRCPF CASEDUC/EDUSRC
+
+       ADDPFM   CASEDUC/EDUSRC   CVTPFSAV
+
+       CRTPF    CASEDUC/RSSDTAF  RCDLEN(528)
+
+       CRTSAVF  CASEDUC/RSSSAVF
+
+
+ 3.  Use your file transfer program to copy the following diskette files to
+     the AS/400:
+
+__COPY PASTE CVTPFSAV.REX IN CASEDUC/EDUSRC MBR(CVTPFSAV.REXX)
+__COPY RSSDTAF.DAT to c:\RSSDTAF.DAT 
+__Run CMD
+__FTP '10.212.158.20'
+__CD CASEDUC
+__BIN
+__Put c:\RSSDTAF.DAT RSSDTAF
+__GOTO STEP 4 BELOW                         
+
+     From diskette file:     To AS/400 file:                File type:
+     -------------------     -----------------------------  ----------------
+
+     CVTPFSAV.REX            CASEDUC/EDUSRC MBR(CVTPFSAV)  ASCII Source file
+
+     RSSDTAF.DAT             CASEDUC/RSSDTAF               No conversion
+
+
+     Note:  It is very important that you do not convert the RSSDTAF.DAT file
+            when transferring to the AS/400.  This file is already in an
+            AS/400 save-file format.
+
+
+ 4.  Now run the following commands from your AS/400 command line:
+
+        STRREXPRC SRCMBR(CVTPFSAV) SRCFILE(CASEDUC/EDUSRC)
+
+        RSTLIB TEMPLATE *SAVF SAVF(CASEDUC/RSSSAVF)
+
+        DLTLIB CASEDUC
+
+
+5.  This completes the manual installation.  You now have a library on your
+    AS/400 called TEMPLATE.
+
